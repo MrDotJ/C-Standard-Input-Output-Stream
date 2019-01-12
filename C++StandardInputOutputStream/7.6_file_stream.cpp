@@ -3,9 +3,73 @@
 #include<string>
 #include<iomanip>
 #include<cstdlib>
+#include<algorithm>
+#include<locale>
+#include<cstdio>
 using namespace std;
 
+//stream based on string
+int main02()
+{
+	return 0;
+}
+//streamBuffer
+
+int main03()
+{
+	
+	ostreambuf_iterator<char> bufwrite(cout);
+	string hello("Hello,world!.\n");
+	copy(hello.begin(), hello.end(), bufwrite);	//copy(source==>dest)
+	istreambuf_iterator<char>inpos(cin);
+	istreambuf_iterator<char>endpos;
+	ostreambuf_iterator<char>outpos(cout);
+	while (inpos!=endpos)
+	{
+		*outpos = *inpos;
+		++inpos;
+		++outpos;
+	}
+	system("pause");
+	return 0;
+	
+	string hello = string("hello my_ostreambuf \n");
+	ostreambuf_iterator<char> mycoutbuf(cout);
+	istreambuf_iterator<char> mycinbuf(cin);
+	istreambuf_iterator<char> myend;
+	copy(hello.begin(), hello.end(), mycoutbuf);
+
+	while (mycinbuf!=myend)		//if null call get();
+	{
+		*mycoutbuf = *mycinbuf;
+		mycoutbuf++;
+		mycinbuf++;
+	}
+	system("pause");
+	return 0;
+}*/
+
+/*
+std::endl	:	insert '\n'							std::ios::right		:
+std::ends	:	insert '\0'							std::ios::scientific
+std::dec	:	dec									std::ios::showbase
+std::hex	:	hex
+std::oct	:	oct
+std::flush	:	flush the buff
+std::fixed	:	cout as 1.99999 not as 1e-3
+*/
 int main()
+{
+	int a = 13;
+	cout << ends << dec << a << endl << hex << a << endl << dec << fixed << setprecision(4) << a << endl;
+	cout << endl;
+	system("pause");
+	return 0;
+}
+
+
+//stream based on file
+int mai01()
 {
 	//ifstream & ofstream : ifstream(char*);ofstream(char*)
 	//ifstream.open(char*,ios_base::);
@@ -38,10 +102,10 @@ int main()
 	float secret;
 	cin >> secret;
 	fout << "Your secret number is " << secret << endl;
-	
+
 	fout.clear();
 	fout.close();
-	
+
 	ifstream fin(filename.c_str());		//cIn something from File Stream
 	cout << "Here are the contents of " << filename.c_str() << ": \n";
 
@@ -51,7 +115,7 @@ int main()
 		cout << ch;
 	}
 	cout << "Done! \n";
-	
+
 	fin.clear();
 	fin.close();
 	cout << "Other file read test:\n";
@@ -65,13 +129,13 @@ int main()
 
 	//2.get a char every call get();
 	ifstream fin3("test.txt");
-	char ch;
-	while (fin3.get(ch))
+	char ch3;
+	while (fin3.get(ch3))
 	{
-		cout << ch;
+		cout << ch3;
 	}
 
-	
+
 	//3.get a line every call getline();
 	char* p = new char[30];
 	memset(p, 0, 30);
@@ -83,10 +147,10 @@ int main()
 	cout << p;
 	fin3.clear();
 	fin3.close();
-	
+
 	//4.ifstream.open(char*,ios_base::in &&out &&app)
 	filename = (string)string("test.txt");
-	ifstream fin;
+
 	fin.open(filename.c_str(), ios_base::in);
 	if (fin.is_open())
 	{
@@ -105,7 +169,7 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 	cout << "Enter new file contents (to be append):\n";
-	
+
 	//5.call getline every to get all the lines
 	string buffer;
 	while (getline(cin,buffer)&&buffer.size()>0)
@@ -114,7 +178,7 @@ int main()
 	}
 	fout.clear();
 	fout.close();
-	
+
 	fin.open(filename.c_str(), ios_base::in);
 	if (fin.is_open())
 	{
@@ -124,12 +188,12 @@ int main()
 	}
 	fin.clear();
 	fin.close();
-	
-	
+
+
 	//6.the difference between cout and cerr;
 	cout << "input wrong words" << endl;
 	cerr << "wrong\n";
-	
+
 
 	//7.control output
 	//cout<<fixed<<right is only valid when copo with setw(int);
@@ -142,7 +206,7 @@ int main()
 	cout << setw(10) << setprecision(5) << a << endl;
 	cout << setw(10) << setprecision(5) << b << endl;
 	cout << setw(10) << setprecision(5) << c << endl;
-	
+
 	//8.iofstream.open()   &&   read&write through binary
 	//ifstream.open(char*,ios_base::in   |ios_base::binary   |ios_base::out   |ios_base::app)
 	//ifstream.read(struct*,sizeof(struct));
@@ -203,14 +267,14 @@ int main()
 		fin.close();
 	}
 	cout << "Done. \n";
-	
+
 	//9.read()in everywhere
 	ifstream fin1(filename.c_str());
 	cout << fin1.rdbuf();
 	cout << endl;
 	fin1.seekg(0);
 	cout << fin1.rdbuf();
-	
+
 	//10.fstream has two functions;
 	//seekg(pos):seekg()is used for input_pointer==>ifstrema   go to the place to input
 	//seekp(pos):seekp()is used for output_pointer==>ofstream  output the pos ;
@@ -225,7 +289,7 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 	cout << "This example is used for test seekg(p) or tellg(p). " << endl;
-	fstream finout, fout;
+//	fstream finout, fout;
 	finout.open(filename.c_str(), ios_base::in | ios_base::out);
 	if (finout.is_open())
 	{
@@ -234,7 +298,7 @@ int main()
 		cout << finout.rdbuf();
 	}
 	finout.seekg(0, ios_base::beg);
-	
+
 	fout.open("b.txt", ios_base::out);
 	if (fout.is_open())
 	{
@@ -261,10 +325,6 @@ int main()
 dd:	system("pause");
 	return 0;
 }
-
-
-
-
 
 
 
